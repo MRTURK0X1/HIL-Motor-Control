@@ -1,0 +1,699 @@
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.arch armv6s-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 4
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.file	"adc_basic.c"
+  14              		.text
+  15              		.align	1
+  16              		.global	uart_putch
+  17              		.syntax unified
+  18              		.code	16
+  19              		.thumb_func
+  21              	uart_putch:
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 0, uses_anonymous_args = 0
+  24              		@ link register save eliminated.
+  25 0000 0422     		movs	r2, #4
+  26 0002 034B     		ldr	r3, .L5
+  27              	.L2:
+  28 0004 9968     		ldr	r1, [r3, #8]
+  29 0006 1142     		tst	r1, r2
+  30 0008 FCD0     		beq	.L2
+  31              		@ sp needed
+  32 000a D861     		str	r0, [r3, #28]
+  33 000c 7047     		bx	lr
+  34              	.L6:
+  35 000e C046     		.align	2
+  36              	.L5:
+  37 0010 00400640 		.word	1074151424
+  39              		.align	1
+  40              		.global	ADC_Configuration
+  41              		.syntax unified
+  42              		.code	16
+  43              		.thumb_func
+  45              	ADC_Configuration:
+  46              		@ args = 0, pretend = 0, frame = 24
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
+  48 0014 F0B5     		push	{r4, r5, r6, r7, lr}
+  49 0016 0127     		movs	r7, #1
+  50 0018 0026     		movs	r6, #0
+  51 001a 124C     		ldr	r4, .L11
+  52 001c 87B0     		sub	sp, sp, #28
+  53 001e 01A9     		add	r1, sp, #4
+  54 0020 0500     		movs	r5, r0
+  55 0022 2000     		movs	r0, r4
+  56 0024 8E80     		strh	r6, [r1, #4]
+  57 0026 0197     		str	r7, [sp, #4]
+  58 0028 FFF7FEFF 		bl	ADC_Init
+  59 002c 0E4B     		ldr	r3, .L11+4
+  60 002e 2000     		movs	r0, r4
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 2
+
+
+  61 0030 03A9     		add	r1, sp, #12
+  62 0032 0593     		str	r3, [sp, #20]
+  63 0034 0397     		str	r7, [sp, #12]
+  64 0036 0496     		str	r6, [sp, #16]
+  65 0038 FFF7FEFF 		bl	ADC_SetConvSeqAConfig
+  66 003c 8023     		movs	r3, #128
+  67 003e A268     		ldr	r2, [r4, #8]
+  68 0040 1B06     		lsls	r3, r3, #24
+  69 0042 1343     		orrs	r3, r2
+  70 0044 A360     		str	r3, [r4, #8]
+  71 0046 8023     		movs	r3, #128
+  72 0048 A268     		ldr	r2, [r4, #8]
+  73 004a DB04     		lsls	r3, r3, #19
+  74 004c 1343     		orrs	r3, r2
+  75 004e A360     		str	r3, [r4, #8]
+  76              	.L8:
+  77 0050 2A00     		movs	r2, r5
+  78 0052 0021     		movs	r1, #0
+  79 0054 0348     		ldr	r0, .L11
+  80 0056 FFF7FEFF 		bl	ADC_GetChannelConversionResult
+  81 005a 0028     		cmp	r0, #0
+  82 005c F8D0     		beq	.L8
+  83 005e 07B0     		add	sp, sp, #28
+  84              		@ sp needed
+  85 0060 F0BD     		pop	{r4, r5, r6, r7, pc}
+  86              	.L12:
+  87 0062 C046     		.align	2
+  88              	.L11:
+  89 0064 00C00140 		.word	1073856512
+  90 0068 01000001 		.word	16777217
+  92              		.align	1
+  93              		.global	clock_init
+  94              		.syntax unified
+  95              		.code	16
+  96              		.thumb_func
+  98              	clock_init:
+  99              		@ args = 0, pretend = 0, frame = 8
+ 100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 101 006c 8E23     		movs	r3, #142
+ 102 006e F7B5     		push	{r0, r1, r2, r4, r5, r6, r7, lr}
+ 103 0070 0121     		movs	r1, #1
+ 104              		@ sp needed
+ 105 0072 0225     		movs	r5, #2
+ 106 0074 0026     		movs	r6, #0
+ 107 0076 154C     		ldr	r4, .L14
+ 108 0078 9B00     		lsls	r3, r3, #2
+ 109 007a E258     		ldr	r2, [r4, r3]
+ 110 007c 6846     		mov	r0, sp
+ 111 007e 8A43     		bics	r2, r1
+ 112 0080 E250     		str	r2, [r4, r3]
+ 113 0082 E258     		ldr	r2, [r4, r3]
+ 114 0084 124F     		ldr	r7, .L14+4
+ 115 0086 AA43     		bics	r2, r5
+ 116 0088 E250     		str	r2, [r4, r3]
+ 117 008a 124B     		ldr	r3, .L14+8
+ 118 008c 1E60     		str	r6, [r3]
+ 119 008e 6B46     		mov	r3, sp
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 3
+
+
+ 120 0090 1E71     		strb	r6, [r3, #4]
+ 121 0092 114B     		ldr	r3, .L14+12
+ 122 0094 0093     		str	r3, [sp]
+ 123 0096 FFF7FEFF 		bl	CLOCK_InitSystemPll
+ 124 009a C020     		movs	r0, #192
+ 125 009c A840     		lsls	r0, r0, r5
+ 126 009e FFF7FEFF 		bl	CLOCK_SetMainClkSrc
+ 127 00a2 0323     		movs	r3, #3
+ 128 00a4 FF22     		movs	r2, #255
+ 129 00a6 3B60     		str	r3, [r7]
+ 130 00a8 A36F     		ldr	r3, [r4, #120]
+ 131 00aa 9343     		bics	r3, r2
+ 132 00ac 1D43     		orrs	r5, r3
+ 133 00ae A567     		str	r5, [r4, #120]
+ 134 00b0 FFF7FEFF 		bl	SystemCoreClockUpdate
+ 135 00b4 0323     		movs	r3, #3
+ 136 00b6 3B60     		str	r3, [r7]
+ 137 00b8 2300     		movs	r3, r4
+ 138 00ba 0121     		movs	r1, #1
+ 139 00bc E433     		adds	r3, r3, #228
+ 140 00be 1E60     		str	r6, [r3]
+ 141 00c0 1960     		str	r1, [r3]
+ 142 00c2 C823     		movs	r3, #200
+ 143 00c4 E834     		adds	r4, r4, #232
+ 144 00c6 2360     		str	r3, [r4]
+ 145 00c8 F7BD     		pop	{r0, r1, r2, r4, r5, r6, r7, pc}
+ 146              	.L15:
+ 147 00ca C046     		.align	2
+ 148              	.L14:
+ 149 00cc 00800440 		.word	1074036736
+ 150 00d0 E0800440 		.word	1074036960
+ 151 00d4 40800440 		.word	1074036800
+ 152 00d8 00879303 		.word	60000000
+ 154              		.align	1
+ 155              		.global	SysTick_Handler
+ 156              		.syntax unified
+ 157              		.code	16
+ 158              		.thumb_func
+ 160              	SysTick_Handler:
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 00dc 034B     		ldr	r3, .L21
+ 165 00de 1A68     		ldr	r2, [r3]
+ 166 00e0 002A     		cmp	r2, #0
+ 167 00e2 02D0     		beq	.L16
+ 168 00e4 1A68     		ldr	r2, [r3]
+ 169 00e6 013A     		subs	r2, r2, #1
+ 170 00e8 1A60     		str	r2, [r3]
+ 171              	.L16:
+ 172              		@ sp needed
+ 173 00ea 7047     		bx	lr
+ 174              	.L22:
+ 175              		.align	2
+ 176              	.L21:
+ 177 00ec 00000000 		.word	.LANCHOR0
+ 179              		.align	1
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 4
+
+
+ 180              		.global	SysTick_DelayTicks
+ 181              		.syntax unified
+ 182              		.code	16
+ 183              		.thumb_func
+ 185              	SysTick_DelayTicks:
+ 186              		@ args = 0, pretend = 0, frame = 0
+ 187              		@ frame_needed = 0, uses_anonymous_args = 0
+ 188              		@ link register save eliminated.
+ 189 00f0 024B     		ldr	r3, .L26
+ 190 00f2 1860     		str	r0, [r3]
+ 191              	.L24:
+ 192 00f4 1A68     		ldr	r2, [r3]
+ 193 00f6 002A     		cmp	r2, #0
+ 194 00f8 FCD1     		bne	.L24
+ 195              		@ sp needed
+ 196 00fa 7047     		bx	lr
+ 197              	.L27:
+ 198              		.align	2
+ 199              	.L26:
+ 200 00fc 00000000 		.word	.LANCHOR0
+ 202              		.section	.rodata.str1.1,"aMS",%progbits,1
+ 203              	.LC4:
+ 204 0000 41444320 		.ascii	"ADC Calibration Done.\015\012\000"
+ 204      43616C69 
+ 204      62726174 
+ 204      696F6E20 
+ 204      446F6E65 
+ 205              	.LC6:
+ 206 0018 41444320 		.ascii	"ADC Calibration Failed.\015\012\000"
+ 206      43616C69 
+ 206      62726174 
+ 206      696F6E20 
+ 206      4661696C 
+ 207              		.global	__aeabi_uidiv
+ 208              	.LC10:
+ 209 0032 436F6E66 		.ascii	"Configuration Done.\015\012\012\000"
+ 209      69677572 
+ 209      6174696F 
+ 209      6E20446F 
+ 209      6E652E0D 
+ 210              		.global	__aeabi_i2f
+ 211              		.global	__aeabi_fmul
+ 212              		.global	__aeabi_fsub
+ 213              		.global	__aeabi_fadd
+ 214              		.global	__aeabi_f2d
+ 215              		.global	__aeabi_dmul
+ 216              		.global	__aeabi_dadd
+ 217              		.global	__aeabi_d2f
+ 218              		.global	__aeabi_fcmpgt
+ 219              		.global	__aeabi_fcmplt
+ 220              	.LC12:
+ 221 0049 256400   		.ascii	"%d\000"
+ 222              		.global	__aeabi_fdiv
+ 223              		.global	__aeabi_f2uiz
+ 224              		.section	.text.startup,"ax",%progbits
+ 225              		.align	1
+ 226              		.global	main
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 5
+
+
+ 227              		.syntax unified
+ 228              		.code	16
+ 229              		.thumb_func
+ 231              	main:
+ 232              		@ args = 0, pretend = 0, frame = 40
+ 233              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 235 0002 8DB0     		sub	sp, sp, #52
+ 236 0004 FFF7FEFF 		bl	BOARD_InitPins
+ 237 0008 8023     		movs	r3, #128
+ 238 000a 994C     		ldr	r4, .L44
+ 239 000c DB01     		lsls	r3, r3, #7
+ 240 000e E26F     		ldr	r2, [r4, #124]
+ 241 0010 984D     		ldr	r5, .L44+4
+ 242 0012 1343     		orrs	r3, r2
+ 243 0014 0122     		movs	r2, #1
+ 244 0016 E367     		str	r3, [r4, #124]
+ 245 0018 974B     		ldr	r3, .L44+8
+ 246 001a 1A60     		str	r2, [r3]
+ 247 001c FFF7FEFF 		bl	BOARD_InitDebugConsole
+ 248 0020 964B     		ldr	r3, .L44+12
+ 249 0022 974A     		ldr	r2, .L44+16
+ 250 0024 1021     		movs	r1, #16
+ 251 0026 1A60     		str	r2, [r3]
+ 252 0028 8023     		movs	r3, #128
+ 253 002a E26F     		ldr	r2, [r4, #124]
+ 254 002c 5B04     		lsls	r3, r3, #17
+ 255 002e 1343     		orrs	r3, r2
+ 256 0030 8E22     		movs	r2, #142
+ 257 0032 E367     		str	r3, [r4, #124]
+ 258 0034 9200     		lsls	r2, r2, #2
+ 259 0036 AB58     		ldr	r3, [r5, r2]
+ 260 0038 0320     		movs	r0, #3
+ 261 003a 8B43     		bics	r3, r1
+ 262 003c AB50     		str	r3, [r5, r2]
+ 263 003e FFF7FEFF 		bl	CLOCK_GetFreq
+ 264 0042 0100     		movs	r1, r0
+ 265 0044 8F48     		ldr	r0, .L44+20
+ 266 0046 FFF7FEFF 		bl	ADC_DoSelfCalibration
+ 267 004a 0028     		cmp	r0, #0
+ 268 004c 00D1     		bne	.LCB246
+ 269 004e 04E1     		b	.L29	@long jump
+ 270              	.LCB246:
+ 271 0050 8D48     		ldr	r0, .L44+24
+ 272              	.L43:
+ 273 0052 FFF7FEFF 		bl	DbgConsole_Printf
+ 274 0056 08A8     		add	r0, sp, #32
+ 275 0058 FFF7FEFF 		bl	ADC_Configuration
+ 276 005c 8023     		movs	r3, #128
+ 277 005e E26F     		ldr	r2, [r4, #124]
+ 278 0060 5B00     		lsls	r3, r3, #1
+ 279 0062 8A4E     		ldr	r6, .L44+28
+ 280 0064 1343     		orrs	r3, r2
+ 281 0066 E367     		str	r3, [r4, #124]
+ 282 0068 05A8     		add	r0, sp, #20
+ 283 006a FFF7FEFF 		bl	SCTIMER_GetDefaultConfig
+ 284 006e 05A9     		add	r1, sp, #20
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 6
+
+
+ 285 0070 3000     		movs	r0, r6
+ 286 0072 FFF7FEFF 		bl	SCTIMER_Init
+ 287 0076 0223     		movs	r3, #2
+ 288 0078 02AA     		add	r2, sp, #8
+ 289 007a FF33     		adds	r3, r3, #255
+ 290 007c 1381     		strh	r3, [r2, #8]
+ 291 007e ED3B     		subs	r3, r3, #237
+ 292 0080 9372     		strb	r3, [r2, #10]
+ 293 0082 834B     		ldr	r3, .L44+32
+ 294 0084 04A9     		add	r1, sp, #16
+ 295 0086 0193     		str	r3, [sp, #4]
+ 296 0088 824B     		ldr	r3, .L44+36
+ 297 008a 0122     		movs	r2, #1
+ 298 008c 0093     		str	r3, [sp]
+ 299 008e 3000     		movs	r0, r6
+ 300 0090 814B     		ldr	r3, .L44+40
+ 301 0092 824D     		ldr	r5, .L44+44
+ 302 0094 FFF7FEFF 		bl	SCTIMER_SetupPwm
+ 303 0098 0422     		movs	r2, #4
+ 304 009a 7368     		ldr	r3, [r6, #4]
+ 305 009c 2021     		movs	r1, #32
+ 306 009e 9343     		bics	r3, r2
+ 307 00a0 7360     		str	r3, [r6, #4]
+ 308 00a2 8026     		movs	r6, #128
+ 309 00a4 E36F     		ldr	r3, [r4, #124]
+ 310 00a6 1732     		adds	r2, r2, #23
+ 311 00a8 3343     		orrs	r3, r6
+ 312 00aa E367     		str	r3, [r4, #124]
+ 313 00ac 7C48     		ldr	r0, .L44+48
+ 314 00ae FFF7FEFF 		bl	SWM_SetMovablePinSelect
+ 315 00b2 E36F     		ldr	r3, [r4, #124]
+ 316 00b4 2900     		movs	r1, r5
+ 317 00b6 B343     		bics	r3, r6
+ 318 00b8 8026     		movs	r6, #128
+ 319 00ba E367     		str	r3, [r4, #124]
+ 320 00bc E36F     		ldr	r3, [r4, #124]
+ 321 00be F600     		lsls	r6, r6, #3
+ 322 00c0 3343     		orrs	r3, r6
+ 323 00c2 E367     		str	r3, [r4, #124]
+ 324 00c4 774C     		ldr	r4, .L44+52
+ 325 00c6 0831     		adds	r1, r1, #8
+ 326 00c8 2000     		movs	r0, r4
+ 327 00ca FFF7FEFF 		bl	MRT_Init
+ 328 00ce 0622     		movs	r2, #6
+ 329 00d0 A368     		ldr	r3, [r4, #8]
+ 330 00d2 0020     		movs	r0, #0
+ 331 00d4 9343     		bics	r3, r2
+ 332 00d6 A360     		str	r3, [r4, #8]
+ 333 00d8 FFF7FEFF 		bl	CLOCK_GetFreq
+ 334 00dc E860     		str	r0, [r5, #12]
+ 335 00de EB68     		ldr	r3, [r5, #12]
+ 336 00e0 5B00     		lsls	r3, r3, #1
+ 337 00e2 2B61     		str	r3, [r5, #16]
+ 338 00e4 2360     		str	r3, [r4]
+ 339 00e6 0123     		movs	r3, #1
+ 340 00e8 A268     		ldr	r2, [r4, #8]
+ 341 00ea 1343     		orrs	r3, r2
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 7
+
+
+ 342 00ec A360     		str	r3, [r4, #8]
+ 343 00ee 6E4B     		ldr	r3, .L44+56
+ 344 00f0 1E60     		str	r6, [r3]
+ 345 00f2 FA21     		movs	r1, #250
+ 346 00f4 6D4B     		ldr	r3, .L44+60
+ 347 00f6 8900     		lsls	r1, r1, #2
+ 348 00f8 1868     		ldr	r0, [r3]
+ 349 00fa FFF7FEFF 		bl	__aeabi_uidiv
+ 350 00fe 8023     		movs	r3, #128
+ 351 0100 0138     		subs	r0, r0, #1
+ 352 0102 5B04     		lsls	r3, r3, #17
+ 353 0104 9842     		cmp	r0, r3
+ 354 0106 00D3     		bcc	.LCB337
+ 355 0108 A9E0     		b	.L31	@long jump
+ 356              	.LCB337:
+ 357 010a C021     		movs	r1, #192
+ 358 010c 684A     		ldr	r2, .L44+64
+ 359 010e 0906     		lsls	r1, r1, #24
+ 360 0110 5060     		str	r0, [r2, #4]
+ 361 0112 6848     		ldr	r0, .L44+68
+ 362 0114 0024     		movs	r4, #0
+ 363 0116 036A     		ldr	r3, [r0, #32]
+ 364 0118 1B02     		lsls	r3, r3, #8
+ 365 011a 1B0A     		lsrs	r3, r3, #8
+ 366 011c 0B43     		orrs	r3, r1
+ 367 011e 0362     		str	r3, [r0, #32]
+ 368 0120 0023     		movs	r3, #0
+ 369 0122 9360     		str	r3, [r2, #8]
+ 370 0124 0733     		adds	r3, r3, #7
+ 371 0126 6448     		ldr	r0, .L44+72
+ 372 0128 1360     		str	r3, [r2]
+ 373 012a FFF7FEFF 		bl	DbgConsole_Printf
+ 374 012e 0394     		str	r4, [sp, #12]
+ 375              	.L32:
+ 376 0130 0A20     		movs	r0, #10
+ 377 0132 FFF7FEFF 		bl	SysTick_DelayTicks
+ 378 0136 8023     		movs	r3, #128
+ 379 0138 524A     		ldr	r2, .L44+20
+ 380 013a DB04     		lsls	r3, r3, #19
+ 381 013c 9168     		ldr	r1, [r2, #8]
+ 382 013e 0B43     		orrs	r3, r1
+ 383 0140 9360     		str	r3, [r2, #8]
+ 384              	.L33:
+ 385 0142 0021     		movs	r1, #0
+ 386 0144 4F48     		ldr	r0, .L44+20
+ 387 0146 08AA     		add	r2, sp, #32
+ 388 0148 FFF7FEFF 		bl	ADC_GetChannelConversionResult
+ 389 014c 0028     		cmp	r0, #0
+ 390 014e F8D0     		beq	.L33
+ 391 0150 6869     		ldr	r0, [r5, #20]
+ 392 0152 FFF7FEFF 		bl	__aeabi_i2f
+ 393 0156 02AB     		add	r3, sp, #8
+ 394 0158 061C     		adds	r6, r0, #0
+ 395 015a 1820     		movs	r0, #24
+ 396 015c 185E     		ldrsh	r0, [r3, r0]
+ 397 015e 574B     		ldr	r3, .L44+76
+ 398 0160 C018     		adds	r0, r0, r3
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 8
+
+
+ 399 0162 FFF7FEFF 		bl	__aeabi_i2f
+ 400 0166 EA21     		movs	r1, #234
+ 401 0168 8905     		lsls	r1, r1, #22
+ 402 016a FFF7FEFF 		bl	__aeabi_fmul
+ 403 016e 011C     		adds	r1, r0, #0
+ 404 0170 301C     		adds	r0, r6, #0
+ 405 0172 FFF7FEFF 		bl	__aeabi_fsub
+ 406 0176 011C     		adds	r1, r0, #0
+ 407 0178 0290     		str	r0, [sp, #8]
+ 408 017a 0398     		ldr	r0, [sp, #12]
+ 409 017c FFF7FEFF 		bl	__aeabi_fadd
+ 410 0180 FFF7FEFF 		bl	__aeabi_f2d
+ 411 0184 4E4A     		ldr	r2, .L44+80
+ 412 0186 4F4B     		ldr	r3, .L44+84
+ 413 0188 FFF7FEFF 		bl	__aeabi_dmul
+ 414 018c 0600     		movs	r6, r0
+ 415 018e 201C     		adds	r0, r4, #0
+ 416 0190 0F00     		movs	r7, r1
+ 417 0192 FFF7FEFF 		bl	__aeabi_f2d
+ 418 0196 0200     		movs	r2, r0
+ 419 0198 0B00     		movs	r3, r1
+ 420 019a 3000     		movs	r0, r6
+ 421 019c 3900     		movs	r1, r7
+ 422 019e FFF7FEFF 		bl	__aeabi_dadd
+ 423 01a2 FFF7FEFF 		bl	__aeabi_d2f
+ 424 01a6 4849     		ldr	r1, .L44+88
+ 425 01a8 041C     		adds	r4, r0, #0
+ 426 01aa FFF7FEFF 		bl	__aeabi_fcmpgt
+ 427 01ae 0028     		cmp	r0, #0
+ 428 01b0 56D1     		bne	.L36
+ 429 01b2 4649     		ldr	r1, .L44+92
+ 430 01b4 201C     		adds	r0, r4, #0
+ 431 01b6 FFF7FEFF 		bl	__aeabi_fcmplt
+ 432 01ba 0028     		cmp	r0, #0
+ 433 01bc 52D1     		bne	.L37
+ 434              	.L34:
+ 435 01be 0399     		ldr	r1, [sp, #12]
+ 436 01c0 0298     		ldr	r0, [sp, #8]
+ 437 01c2 FFF7FEFF 		bl	__aeabi_fsub
+ 438 01c6 FFF7FEFF 		bl	__aeabi_f2d
+ 439 01ca A022     		movs	r2, #160
+ 440 01cc 404B     		ldr	r3, .L44+96
+ 441 01ce D204     		lsls	r2, r2, #19
+ 442 01d0 FFF7FEFF 		bl	__aeabi_dmul
+ 443 01d4 0600     		movs	r6, r0
+ 444 01d6 0F00     		movs	r7, r1
+ 445 01d8 0298     		ldr	r0, [sp, #8]
+ 446 01da 3E49     		ldr	r1, .L44+100
+ 447 01dc FFF7FEFF 		bl	__aeabi_fmul
+ 448 01e0 FFF7FEFF 		bl	__aeabi_f2d
+ 449 01e4 0200     		movs	r2, r0
+ 450 01e6 0B00     		movs	r3, r1
+ 451 01e8 3000     		movs	r0, r6
+ 452 01ea 3900     		movs	r1, r7
+ 453 01ec FFF7FEFF 		bl	__aeabi_dadd
+ 454 01f0 0600     		movs	r6, r0
+ 455 01f2 201C     		adds	r0, r4, #0
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 9
+
+
+ 456 01f4 0F00     		movs	r7, r1
+ 457 01f6 FFF7FEFF 		bl	__aeabi_f2d
+ 458 01fa 0200     		movs	r2, r0
+ 459 01fc 0B00     		movs	r3, r1
+ 460 01fe 3000     		movs	r0, r6
+ 461 0200 3900     		movs	r1, r7
+ 462 0202 FFF7FEFF 		bl	__aeabi_dadd
+ 463 0206 FFF7FEFF 		bl	__aeabi_d2f
+ 464 020a 2F49     		ldr	r1, .L44+88
+ 465 020c 061C     		adds	r6, r0, #0
+ 466 020e FFF7FEFF 		bl	__aeabi_fcmpgt
+ 467 0212 0028     		cmp	r0, #0
+ 468 0214 28D1     		bne	.L38
+ 469 0216 2D49     		ldr	r1, .L44+92
+ 470 0218 301C     		adds	r0, r6, #0
+ 471 021a FFF7FEFF 		bl	__aeabi_fcmplt
+ 472 021e 0028     		cmp	r0, #0
+ 473 0220 24D1     		bne	.L39
+ 474              	.L35:
+ 475 0222 6969     		ldr	r1, [r5, #20]
+ 476 0224 2C48     		ldr	r0, .L44+104
+ 477 0226 FFF7FEFF 		bl	xprintf
+ 478 022a 2C49     		ldr	r1, .L44+108
+ 479 022c 301C     		adds	r0, r6, #0
+ 480 022e FFF7FEFF 		bl	__aeabi_fmul
+ 481 0232 2549     		ldr	r1, .L44+88
+ 482 0234 FFF7FEFF 		bl	__aeabi_fdiv
+ 483 0238 2849     		ldr	r1, .L44+108
+ 484 023a FFF7FEFF 		bl	__aeabi_fadd
+ 485 023e 2849     		ldr	r1, .L44+112
+ 486 0240 FFF7FEFF 		bl	__aeabi_fdiv
+ 487 0244 FFF7FEFF 		bl	__aeabi_f2uiz
+ 488 0248 6B68     		ldr	r3, [r5, #4]
+ 489 024a C2B2     		uxtb	r2, r0
+ 490 024c 0121     		movs	r1, #1
+ 491 024e 0F48     		ldr	r0, .L44+28
+ 492 0250 FFF7FEFF 		bl	SCTIMER_UpdatePwmDutycycle
+ 493 0254 029B     		ldr	r3, [sp, #8]
+ 494 0256 0393     		str	r3, [sp, #12]
+ 495 0258 6AE7     		b	.L32
+ 496              	.L29:
+ 497 025a 2248     		ldr	r0, .L44+116
+ 498 025c F9E6     		b	.L43
+ 499              	.L31:
+ 500 025e FEE7     		b	.L31
+ 501              	.L36:
+ 502 0260 194C     		ldr	r4, .L44+88
+ 503 0262 ACE7     		b	.L34
+ 504              	.L37:
+ 505 0264 194C     		ldr	r4, .L44+92
+ 506 0266 AAE7     		b	.L34
+ 507              	.L38:
+ 508 0268 174E     		ldr	r6, .L44+88
+ 509 026a DAE7     		b	.L35
+ 510              	.L39:
+ 511 026c 174E     		ldr	r6, .L44+92
+ 512 026e D8E7     		b	.L35
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 10
+
+
+ 513              	.L45:
+ 514              		.align	2
+ 515              	.L44:
+ 516 0270 04800440 		.word	1074036740
+ 517 0274 00800440 		.word	1074036736
+ 518 0278 94800440 		.word	1074036884
+ 519 027c 00000000 		.word	xfunc_output
+ 520 0280 00000000 		.word	uart_putch
+ 521 0284 00C00140 		.word	1073856512
+ 522 0288 00000000 		.word	.LC4
+ 523 028c 00400050 		.word	1342193664
+ 524 0290 04000000 		.word	.LANCHOR0+4
+ 525 0294 80C3C901 		.word	30000000
+ 526 0298 A0860100 		.word	100000
+ 527 029c 00000000 		.word	.LANCHOR0
+ 528 02a0 00C00040 		.word	1073790976
+ 529 02a4 00400040 		.word	1073758208
+ 530 02a8 00E100E0 		.word	-536813312
+ 531 02ac 00000000 		.word	SystemCoreClock
+ 532 02b0 10E000E0 		.word	-536813552
+ 533 02b4 00ED00E0 		.word	-536810240
+ 534 02b8 32000000 		.word	.LC10
+ 535 02bc 01F8FFFF 		.word	-2047
+ 536 02c0 33333333 		.word	858993459
+ 537 02c4 3333D33F 		.word	1070805811
+ 538 02c8 0000C841 		.word	1103626240
+ 539 02cc 0000C8C1 		.word	-1043857408
+ 540 02d0 00001440 		.word	1075052544
+ 541 02d4 00007041 		.word	1097859072
+ 542 02d8 49000000 		.word	.LC12
+ 543 02dc 00001643 		.word	1125515264
+ 544 02e0 00004040 		.word	1077936128
+ 545 02e4 18000000 		.word	.LC6
+ 547              		.text
+ 548              		.align	1
+ 549              		.global	MRT0_IRQHandler
+ 550              		.syntax unified
+ 551              		.code	16
+ 552              		.thumb_func
+ 554              	MRT0_IRQHandler:
+ 555              		@ args = 0, pretend = 0, frame = 0
+ 556              		@ frame_needed = 0, uses_anonymous_args = 0
+ 557              		@ link register save eliminated.
+ 558 0100 044B     		ldr	r3, .L47
+ 559              		@ sp needed
+ 560 0102 5A69     		ldr	r2, [r3, #20]
+ 561 0104 5A69     		ldr	r2, [r3, #20]
+ 562 0106 5142     		rsbs	r1, r2, #0
+ 563 0108 4A41     		adcs	r2, r2, r1
+ 564 010a 5A61     		str	r2, [r3, #20]
+ 565 010c 0122     		movs	r2, #1
+ 566 010e 024B     		ldr	r3, .L47+4
+ 567 0110 DA60     		str	r2, [r3, #12]
+ 568 0112 7047     		bx	lr
+ 569              	.L48:
+ 570              		.align	2
+ 571              	.L47:
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 11
+
+
+ 572 0114 00000000 		.word	.LANCHOR0
+ 573 0118 00400040 		.word	1073758208
+ 575              		.global	ReferenceSignal
+ 576              		.global	event1
+ 577              		.global	mrt_count_val
+ 578              		.global	mrtConfig
+ 579              		.global	mrtClock
+ 580              		.global	SystickCounter
+ 581              		.bss
+ 582              		.align	2
+ 583              		.set	.LANCHOR0,. + 0
+ 586              	SystickCounter:
+ 587 0000 00000000 		.space	4
+ 590              	event1:
+ 591 0004 00000000 		.space	4
+ 594              	mrtConfig:
+ 595 0008 00       		.space	1
+ 596 0009 000000   		.space	3
+ 599              	mrtClock:
+ 600 000c 00000000 		.space	4
+ 603              	mrt_count_val:
+ 604 0010 00000000 		.space	4
+ 607              	ReferenceSignal:
+ 608 0014 00000000 		.space	4
+ 609              		.ident	"GCC: (Arm GNU Toolchain 13.2.rel1 (Build arm-13.7)) 13.2.1 20231009"
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 adc_basic.c
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:15     .text:00000000 $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:21     .text:00000000 uart_putch
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:37     .text:00000010 $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:39     .text:00000014 $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:45     .text:00000014 ADC_Configuration
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:89     .text:00000064 $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:92     .text:0000006c $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:98     .text:0000006c clock_init
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:149    .text:000000cc $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:154    .text:000000dc $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:160    .text:000000dc SysTick_Handler
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:177    .text:000000ec $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:179    .text:000000f0 $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:185    .text:000000f0 SysTick_DelayTicks
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:200    .text:000000fc $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:225    .text.startup:00000000 $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:231    .text.startup:00000000 main
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:516    .text.startup:00000270 $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:548    .text:00000100 $t
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:554    .text:00000100 MRT0_IRQHandler
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:572    .text:00000114 $d
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:607    .bss:00000014 ReferenceSignal
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:590    .bss:00000004 event1
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:603    .bss:00000010 mrt_count_val
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:594    .bss:00000008 mrtConfig
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:599    .bss:0000000c mrtClock
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:586    .bss:00000000 SystickCounter
+C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s:582    .bss:00000000 $d
+
+UNDEFINED SYMBOLS
+ADC_Init
+ADC_SetConvSeqAConfig
+ADC_GetChannelConversionResult
+CLOCK_InitSystemPll
+CLOCK_SetMainClkSrc
+SystemCoreClockUpdate
+__aeabi_uidiv
+__aeabi_i2f
+__aeabi_fmul
+__aeabi_fsub
+__aeabi_fadd
+__aeabi_f2d
+__aeabi_dmul
+__aeabi_dadd
+__aeabi_d2f
+__aeabi_fcmpgt
+__aeabi_fcmplt
+__aeabi_fdiv
+__aeabi_f2uiz
+BOARD_InitPins
+BOARD_InitDebugConsole
+CLOCK_GetFreq
+ADC_DoSelfCalibration
+DbgConsole_Printf
+SCTIMER_GetDefaultConfig
+ARM GAS  C:\Users\Turk\AppData\Local\Temp\ccEAcu1q.s 			page 13
+
+
+SCTIMER_Init
+SCTIMER_SetupPwm
+SWM_SetMovablePinSelect
+MRT_Init
+xprintf
+SCTIMER_UpdatePwmDutycycle
+xfunc_output
+SystemCoreClock
